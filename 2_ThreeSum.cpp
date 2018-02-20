@@ -62,31 +62,31 @@ using namespace std;
 vector<vector<int> > threeSum(vector<int> &num)
 {
 	//sort the array
-	sort(num.begin(), num.end());
+    sort(num.begin(), num.end());
     //ret contains the resultant triplets
     vector<vector<int> > res;
     //tuple format of the result
     vector<int> tuples(3);
     for (int i = 0; i < num.size(); ++i) 
-	{
+    {
       // ignore duplicate elements
     	if (i > 0 && num[i] == num[i-1])
     		continue;
       	int target = -num[i];
       	int start = i+1, end = num.size()-1;
       	while (start < end) 
-		{
+	{
 			//found a triplet with sum as 0
         	if (num[start] + num[end] == target) 
-			{
+		{
          		tuples[0] = num[i];
           		tuples[1] = num[start];
           		tuples[2] = num[end];
           		res.push_back(tuples);
           		++start;
           		--end;
-        	} 
-			else if (num[start] + num[end] > target)
+        	} 	
+		else if (num[start] + num[end] > target)
           		--end;
         	else 
           		++start;  
@@ -114,9 +114,9 @@ int main()
 	vector<vector<int> > result = threeSum(inp);
   	for (int i = 0; i < result.size(); ++i) 
 	{
-    	for (int j = 0; j < 3; ++j)
-      		cout << result[i][j] << " ";
-    	cout << endl;
+    		for (int j = 0; j < 3; ++j)
+      			cout << result[i][j] << " ";
+    		cout << endl;
   	}
   	return 0;
 } 
