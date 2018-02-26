@@ -67,17 +67,17 @@ vector<vector<int> > threeSum(vector<int> &num)
     vector<vector<int> > res;
     //tuple format of the result
     vector<int> tuples(3);
-    for (int i = 0; i < num.size(); ++i) 
+    for (int i = 0; i < (num.size() - 2); ++i) 
     {
       // ignore duplicate elements
     	if (i > 0 && num[i] == num[i-1])
     		continue;
-      	int target = -num[i];
+      	//int target = -num[i];
       	int start = i+1, end = num.size()-1;
       	while (start < end) 
 	{
 			//found a triplet with sum as 0
-        	if (num[start] + num[end] == target) 
+        	if (num[start] + num[end] + num[i] == 0) 
 		{
          		tuples[0] = num[i];
           		tuples[1] = num[start];
@@ -86,7 +86,7 @@ vector<vector<int> > threeSum(vector<int> &num)
           		++start;
           		--end;
         	} 	
-		else if (num[start] + num[end] > target)
+		else if (num[start] + num[end] > (-num[i]))
           		--end;
         	else 
           		++start;  
@@ -103,7 +103,102 @@ vector<vector<int> > threeSum(vector<int> &num)
         	res[len++] = res[i];
     return vector<vector<int> >(res.begin(), res.begin()+len);
 }
+//6. T - TEST
+//Multiple triplets exist
+//[-1, 0, 1, 2, -1, -4] -> [ [-1, 0, 1], [-1, -1, 2]]
+int testThreeSum1()
+{
+    int flag=0;
+    freopen("test1.in", "r", stdin);
+    vector<int> inp;
+  	int a;
+ 	while (scanf("%d,", &a) != EOF )
+    	inp.push_back(a);
+	vector<vector<int> > computedRes = threeSum(inp);
+	vector<vector<int> > actualRes{ { -1, -1, 2 },
+                               { -1, 0, 1 }};
+    for (int i = 0; i < computedRes.size(); ++i)
+	{
+    	for (int j = 0; j < 3; ++j)
+      		{
+      		    if(computedRes[i][j] == actualRes[i][j])
+                    continue;
+                else
+                    {
+                        flag=1;
+                        break;
+                    }
+      		}
+  	}
+  	if(flag)
+        cout<<"\nOne or more test cases failed\n";
+    else
+        cout<<"\nPassed\n";
+  	return 0;
+}
 
+//When no such triplet exists
+//[-1,1,2,-2] -> NULL
+int testThreeSum2()
+{
+    int flag=0;
+    freopen("test2.in", "r", stdin);
+    vector<int> inp;
+  	int a;
+ 	while (scanf("%d,", &a) != EOF )
+    	inp.push_back(a);
+	vector<vector<int> > computedRes = threeSum(inp);
+	vector<vector<int> > actualRes{};
+    for (int i = 0; i < computedRes.size(); ++i)
+	{
+    	for (int j = 0; j < 3; ++j)
+      		{
+      		    if(computedRes[i][j] == actualRes[i][j])
+                    continue;
+                else
+                    {
+                        flag=1;
+                        break;
+                    }
+      		}
+  	}
+  	if(flag)
+        cout<<"\nOne or more test cases failed\n";
+    else
+        cout<<"\nPassed\n";
+  	return 0;
+}
+
+//Null input
+int testThreeSum3()
+{
+    int flag=0;
+    freopen("test3.in", "r", stdin);
+    vector<int> inp;
+  	int a;
+ 	while (scanf("%d,", &a) != EOF )
+    	inp.push_back(a);
+	vector<vector<int> > computedRes = threeSum(inp);
+	vector<vector<int> > actualRes{};
+    for (int i = 0; i < computedRes.size(); ++i)
+	{
+    	for (int j = 0; j < 3; ++j)
+      		{
+      		    if(computedRes[i][j] == actualRes[i][j])
+                    continue;
+                else
+                    {
+                        flag=1;
+                        break;
+                    }
+      		}
+  	}
+  	if(flag)
+        cout<<"\nOne or more test cases failed\n";
+    else
+        cout<<"\nPassed\n";
+  	return 0;
+}
 int main() 
 {
 	freopen("input.in", "r", stdin);
@@ -118,6 +213,9 @@ int main()
       			cout << result[i][j] << " ";
     		cout << endl;
   	}
+	testThreeSum1();
+  	testThreeSum2();
+  	testThreeSum3();
   	return 0;
 } 
 
