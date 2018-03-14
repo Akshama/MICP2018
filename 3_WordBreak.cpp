@@ -8,10 +8,10 @@ Word Break
 Given an input string and a dictionary of words, find out if the input string can be segmented into a space-separated sequence of dictionary words.
 For example, consider the following dictionary: { pear, salmon, foot, prints, footprints, leave, you, sun, girl, enjoy },
 Examples:
-Given the string ìyouenjoyî,
-Output: True (The string can be segmented as ìyou enjoyî)
-Input: ìyouleavefootprintsî,
-Output: True (The string can be segmented as ìyou leave footprintsî or ìyou leave foot printsî)
+Given the string ‚Äúyouenjoy‚Äù,
+Output: True (The string can be segmented as ‚Äúyou enjoy‚Äù)
+Input: ‚Äúyouleavefootprints‚Äù,
+Output: True (The string can be segmented as ‚Äúyou leave footprints‚Äù or ‚Äúyou leave foot prints‚Äù)
 Input:salmonenjoyapples
 Output: False
 
@@ -69,9 +69,12 @@ Explained as comments in the code
 #include <vector>
 #include <algorithm>
 using namespace std;
-bool wordBreak(vector<string> const &dict, string str, vector<int> &canBeSegmented)
+int wordBreak(vector<string> const &dict, string str)
 {
+    vector<int> canBeSegmented(str.length() + 1, -1);
     int len = str.size();
+    if(dict.size()==0)
+        return false;
     if (len == 0)
         return true;
     //subproblem encountered for the first time
@@ -84,7 +87,7 @@ bool wordBreak(vector<string> const &dict, string str, vector<int> &canBeSegment
             // consider all prefixes of current string
             string prefix = str.substr(0, i);
             // if prefix is found in dictionary, then recurse for suffix
-            if (find(dict.begin(), dict.end(), prefix) != dict.end() && wordBreak(dict, str.substr(i), canBeSegmented))
+            if (find(dict.begin(), dict.end(), prefix) != dict.end() && wordBreak(dict, str.substr(i)))
                 return canBeSegmented[len] = 1;
 
         }
@@ -100,20 +103,28 @@ bool testWordBreak()
     string str1 = ""; //empty dict and empty string
     string str2 = "heartist"; //string can be segmented
     string str3 = "You"; //case sensitivity
-    vector<int> canBeSegmented1(str1.length() + 1, -1);
-    if (wordBreak({""}, "",canBeSegmented1 )!= false) //empty dict and empty string
+    if (wordBreak({""}, "")!= false) //empty dict and empty string
     {
         cout<<"\nOne or more test cases failed";
         return false;
     }
-    vector<int> canBeSegmented2(str2.length() + 1, -1);
-    if (wordBreak(dict,"youleavefootprints", canBeSegmented2)!=true) //string can be segmented
+    if (wordBreak({""}, "youleavefootprints")!= false) //empty dict and empty string
     {
         cout<<"\nOne or more test cases failed";
         return false;
     }
-    vector<int> canBeSegmented3(str3.length() + 1, -1);
-    if (wordBreak(dict,"You", canBeSegmented3)!=false)//case sensitivity
+    if (wordBreak(dict, "")!= true) //empty dict and empty string
+    {
+        cout<<"\nOne or more test cases failed";
+        return false;
+    }
+    if (wordBreak(dict,"youleavefootprints")!=true) //string can be segmented
+    {
+        cout<<"\nOne or more test cases failed";
+        return false;
+    }
+
+    if (wordBreak(dict,"You")!=false)//case sensitivity
     {
         cout<<"\nOne or more test cases failed";
         return false;
@@ -128,10 +139,10 @@ int main()
     cin>>str;
     if(str.length())
     {
-        vector<int> canBeSegmented(str.length() + 1, -1);
+
         //subproblems vector, initialized as -1 for all values.
         // -1: not encountered, 0: encountered, 1: can be segmented i.e, one or more of the word breaks of the string matches words in the dictionary.
-        if (wordBreak(dict, str, canBeSegmented))
+        if (wordBreak(dict, str))
             cout << "True";
         else
             cout << "False";
@@ -141,3 +152,4 @@ int main()
     testWordBreak();
     return 0;
 }
+
